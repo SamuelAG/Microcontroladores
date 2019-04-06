@@ -5687,7 +5687,7 @@ size_t strxfrm_l (char *restrict, const char *restrict, size_t, locale_t);
 
 void *memccpy (void *restrict, const void *restrict, int, size_t);
 # 10 "main.c" 2
-# 28 "main.c"
+# 30 "main.c"
 void setup();
 void envia_char(char dado);
 void clear_lcd();
@@ -5695,63 +5695,59 @@ void inicia_lcd();
 void envia_frase(char frase[]);
 
 
-char switch_press_scan();
-void initKeypad();
-char keypad_scanner();
+char entrada_teclado();
 
 void main(void) {
     setup();
-    initKeypad();
     inicia_lcd();
-    char key = 'n';
+    char key;
     while(1) {
-        key = switch_press_scan();
-        envia_char(key);
-
-
+        key = entrada_teclado();
+        if(key != 'n')
+            envia_char(key);
     }
     return;
 }
 
-char switch_press_scan(void) {
-    char key = 'n';
-    while(key=='n')
-    key = keypad_scanner();
-    return key;
-}
+char entrada_teclado(){
+    LATBbits.LATB4 = 1, LATBbits.LATB3 = 0, LATBbits.LATB2 = 0, LATBbits.LATB1 = 0;
 
-char keypad_scanner(void) {
-    LATBbits.LATB0 = 0; LATBbits.LATB1 = 1; LATBbits.LATB2 = 1; LATBbits.LATB3 = 1;
-    if (PORTBbits.RB4 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '1'; }
-    if (PORTBbits.RB5 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '2'; }
-    if (PORTBbits.RB6 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '3'; }
+    if(PORTBbits.RB7 == 1){ while(PORTBbits.RB7 == 1){} return '1'; }
+    if(PORTBbits.RB6 == 1){ while(PORTBbits.RB6 == 1){} return '2'; }
+    if(PORTBbits.RB5 == 1){ while(PORTBbits.RB5 == 1){} return '3'; }
 
-    LATBbits.LATB0 = 1; LATBbits.LATB1 = 0; LATBbits.LATB2 = 1; LATBbits.LATB3 = 1;
-    if (PORTBbits.RB4 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '4'; }
-    if (PORTBbits.RB5 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '5'; }
-    if (PORTBbits.RB6 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '6'; }
+    LATBbits.LATB4 = 0,LATBbits.LATB3 = 1, LATBbits.LATB2 = 0, LATBbits.LATB1 = 0;
 
-    LATBbits.LATB0 = 1; LATBbits.LATB1 = 1; LATBbits.LATB2 = 0; LATBbits.LATB3 = 1;
-    if (PORTBbits.RB4 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '7'; }
-    if (PORTBbits.RB5 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '8'; }
-    if (PORTBbits.RB6 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '9'; }
+    if(PORTBbits.RB7 == 1){ while(PORTBbits.RB7 == 1){} return '4'; }
+    if(PORTBbits.RB6 == 1){ while(PORTBbits.RB6 == 1){} return '5'; }
+    if(PORTBbits.RB5 == 1){ while(PORTBbits.RB5 == 1){} return '6'; }
 
-    LATBbits.LATB0 = 1; LATBbits.LATB1 = 1; LATBbits.LATB2 = 1; LATBbits.LATB3 = 0;
-    if (PORTBbits.RB4 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '*'; }
-    if (PORTBbits.RB5 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '0'; }
-    if (PORTBbits.RB6 == 0) { _delay((unsigned long)((100)*(8000000/4000.0))); return '#'; }
+    LATBbits.LATB4 = 0, LATBbits.LATB3 = 0, LATBbits.LATB2 = 1, LATBbits.LATB1 = 0;
+
+    if(PORTBbits.RB7 == 1){ while(PORTBbits.RB7 == 1){} return '7'; }
+    if(PORTBbits.RB6 == 1){ while(PORTBbits.RB6 == 1){} return '8'; }
+    if(PORTBbits.RB5 == 1){ while(PORTBbits.RB5 == 1){} return '9'; }
+
+    LATBbits.LATB4 = 0, LATBbits.LATB3 = 0, LATBbits.LATB2 = 0, LATBbits.LATB1 = 1;
+
+    if(PORTBbits.RB7 == 1){ while(PORTBbits.RB7 == 1){} return '*'; }
+    if(PORTBbits.RB6 == 1){ while(PORTBbits.RB6 == 1){} return '0'; }
+    if(PORTBbits.RB5 == 1){ while(PORTBbits.RB5 == 1){} return '#'; }
 
     return 'n';
 }
 
-void initKeypad() {
-    PORTB = 0x00;
-    TRISB = 0xF0;
-}
-
 void setup() {
-    PORTB = 0b11100000;
-    TRISB = 0xF0;
+    TRISBbits.RB5 = 1;
+    TRISBbits.RB6 = 1;
+    TRISBbits.RB7 = 1;
+
+    TRISBbits.RB4 = 0;
+    TRISBbits.RB3 = 0;
+    TRISBbits.RB2 = 0;
+    TRISBbits.RB1 = 0;
+
+
     TRISD = 0b00000000;
     TRISCbits.RC0 = 0;
     TRISCbits.RC1 = 0;

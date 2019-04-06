@@ -11,14 +11,14 @@
 #define _XTAL_FREQ 8000000
 
 // Teclado
-#define X_1 LATBbits.LATB0
-#define X_2 LATBbits.LATB1
+#define X_1 LATBbits.LATB4
+#define X_2 LATBbits.LATB3
 #define X_3 LATBbits.LATB2
-#define X_4 LATBbits.LATB3
+#define X_4 LATBbits.LATB1
 
-#define Y_1 PORTBbits.RB4
-#define Y_2 PORTBbits.RB5
-#define Y_3 PORTBbits.RB6
+#define Y_1 PORTBbits.RB7
+#define Y_2 PORTBbits.RB6
+#define Y_3 PORTBbits.RB5
 
 // LCD
 #define RS LATCbits.LATC0
@@ -34,63 +34,59 @@ void inicia_lcd();
 void envia_frase(char frase[]);
 
 // Funções Teclado
-char switch_press_scan();
-void initKeypad();
-char keypad_scanner();
+char entrada_teclado();
 
 void main(void) {
     setup();
-    initKeypad();
     inicia_lcd();
-    char key = 'n';
+    char key;
     while(1) {
-        key = switch_press_scan();
-        envia_char(key);
-        
-        
+        key = entrada_teclado();
+        if(key != 'n')
+            envia_char(key);
     }
     return;
 }
 
-char switch_press_scan(void) {
-    char key = 'n';              // Assume no key pressed
-    while(key=='n')              // Wait untill a key is pressed
-    key = keypad_scanner();   // Scan the keys again and again
-    return key;                  //when key pressed then return its value
-}
-
-char keypad_scanner(void) {           
-    X_1 = 0; X_2 = 1; X_3 = 1; X_4 = 1;    
-    if (Y_1 == 0) { __delay_ms(100); return '1'; }
-    if (Y_2 == 0) { __delay_ms(100); return '2'; }
-    if (Y_3 == 0) { __delay_ms(100); return '3'; }
-  
-    X_1 = 1; X_2 = 0; X_3 = 1; X_4 = 1;    
-    if (Y_1 == 0) { __delay_ms(100); return '4'; }
-    if (Y_2 == 0) { __delay_ms(100); return '5'; }
-    if (Y_3 == 0) { __delay_ms(100); return '6'; }
-
-    X_1 = 1; X_2 = 1; X_3 = 0; X_4 = 1;    
-    if (Y_1 == 0) { __delay_ms(100); return '7'; }
-    if (Y_2 == 0) { __delay_ms(100); return '8'; }
-    if (Y_3 == 0) { __delay_ms(100); return '9'; }
+char entrada_teclado(){
+    X_1 = 1, X_2 = 0, X_3 = 0, X_4 = 0;
     
-    X_1 = 1; X_2 = 1; X_3 = 1; X_4 = 0;    
-    if (Y_1 == 0) { __delay_ms(100); return '*'; }
-    if (Y_2 == 0) { __delay_ms(100); return '0'; }
-    if (Y_3 == 0) { __delay_ms(100); return '#'; }
-            
-    return 'n';                   
-}
-
-void initKeypad() {
-    PORTB = 0x00;        // Set Keypad port pin values zero
-    TRISB = 0xF0;      // Last 4 pins input, First 4 pins output
+    if(Y_1 == 1){ while(Y_1 == 1){} return '1'; }
+    if(Y_2 == 1){ while(Y_2 == 1){} return '2'; }
+    if(Y_3 == 1){ while(Y_3 == 1){} return '3'; }
+    
+    X_1 = 0,X_2 = 1, X_3 = 0, X_4 = 0;
+    
+    if(Y_1 == 1){ while(Y_1 == 1){} return '4'; }
+    if(Y_2 == 1){ while(Y_2 == 1){} return '5'; }
+    if(Y_3 == 1){ while(Y_3 == 1){} return '6'; }
+    
+    X_1 = 0, X_2 = 0, X_3 = 1, X_4 = 0;
+    
+    if(Y_1 == 1){ while(Y_1 == 1){} return '7'; }
+    if(Y_2 == 1){ while(Y_2 == 1){} return '8'; }
+    if(Y_3 == 1){ while(Y_3 == 1){} return '9'; }
+ 
+    X_1 = 0, X_2 = 0, X_3 = 0, X_4 = 1;
+    
+    if(Y_1 == 1){ while(Y_1 == 1){} return '*'; }
+    if(Y_2 == 1){ while(Y_2 == 1){} return '0'; }
+    if(Y_3 == 1){ while(Y_3 == 1){} return '#'; }
+    
+    return 'n';
 }
 
 void setup() {
-    PORTB = 0b11100000;
-    TRISB = 0xF0;
+    TRISBbits.RB5 = 1;
+    TRISBbits.RB6 = 1;
+    TRISBbits.RB7 = 1;
+    
+    TRISBbits.RB4 = 0;
+    TRISBbits.RB3 = 0;
+    TRISBbits.RB2 = 0;
+    TRISBbits.RB1 = 0;
+    
+    
     TRISD = 0b00000000;
     TRISCbits.RC0 = 0;
     TRISCbits.RC1 = 0;
