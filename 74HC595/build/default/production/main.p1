@@ -1,11 +1,11 @@
 Version 4.0 HI-TECH Software Intermediate Code
 [p mainexit ]
-"15 main.c
-[; ;main.c: 15: void setup();
+"16 main.c
+[; ;main.c: 16: void setup();
 [v _setup `(v ~T0 @X0 0 e? ]
-"18
-[; ;main.c: 18: void sendData(int data);
-[v _sendData `(v ~T0 @X0 0 ef1`i ]
+"21
+[; ;main.c: 21: void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int segundos_unidade);
+[v _setTimer `(v ~T0 @X0 0 ef4`i`i`i`i ]
 [v F3152 `(v ~T0 @X0 1 tf1`ul ]
 "183 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic18.h
 [v __delay `JF3152 ~T0 @X0 0 e ]
@@ -25,11 +25,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 "3290
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic18f4550.h: 3290: extern volatile LATDbits_t LATDbits __attribute__((address(0xF8C)));
 [v _LATDbits `VS135 ~T0 @X0 0 e@3980 ]
-"16 main.c
-[; ;main.c: 16: void clock();
+"17 main.c
+[; ;main.c: 17: void clock();
 [v _clock `(v ~T0 @X0 0 e? ]
-"17
-[; ;main.c: 17: void key();
+"18
+[; ;main.c: 18: void key();
 [v _key `(v ~T0 @X0 0 e? ]
 "4001 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic18f4550.h
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic18f4550.h: 4001: extern volatile unsigned char TRISD __attribute__((address(0xF95)));
@@ -544,180 +544,364 @@ Version 4.0 HI-TECH Software Intermediate Code
 "8893
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic18f4550.h: 8893: __asm("TOSU equ 0FFFh");
 [; <" TOSU equ 0FFFh ;# ">
+"23 main.c
+[; ;main.c: 23: int byte7seg[10] = {
+[v _byte7seg `i ~T0 @X0 -> 10 `i e ]
+[i _byte7seg
+:U ..
+-> 252 `i
+-> 96 `i
+-> 218 `i
+-> 242 `i
+-> 102 `i
+-> 182 `i
+-> 190 `i
+-> 224 `i
+-> 254 `i
+-> 246 `i
+..
+]
 [v $root$_main `(v ~T0 @X0 0 e ]
-"20 main.c
-[; ;main.c: 20: void main(void) {
+"36
+[; ;main.c: 36: void main(void) {
 [v _main `(v ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"21
-[; ;main.c: 21:     setup();
+"37
+[; ;main.c: 37:     setup();
 [e ( _setup ..  ]
-"22
-[; ;main.c: 22:     while(1){
+"38
+[; ;main.c: 38:     int minutos_dezena = 0;
+[v _minutos_dezena `i ~T0 @X0 1 a ]
+[e = _minutos_dezena -> 0 `i ]
+"39
+[; ;main.c: 39:     int minutos_unidade = 0;
+[v _minutos_unidade `i ~T0 @X0 1 a ]
+[e = _minutos_unidade -> 0 `i ]
+"40
+[; ;main.c: 40:     int segundos_dezena = 0;
+[v _segundos_dezena `i ~T0 @X0 1 a ]
+[e = _segundos_dezena -> 0 `i ]
+"41
+[; ;main.c: 41:     while(1) {
 [e :U 369 ]
 {
-"23
-[; ;main.c: 23:         sendData(0b11111100);
-[e ( _sendData (1 -> 252 `i ]
-"24
-[; ;main.c: 24:         _delay((unsigned long)((500)*(8000000/4000.0)));
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-"25
-[; ;main.c: 25:         sendData(0b01100000);
-[e ( _sendData (1 -> 96 `i ]
-"26
-[; ;main.c: 26:         _delay((unsigned long)((500)*(8000000/4000.0)));
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-"27
-[; ;main.c: 27:         sendData(0b11011010);
-[e ( _sendData (1 -> 218 `i ]
-"28
-[; ;main.c: 28:         _delay((unsigned long)((500)*(8000000/4000.0)));
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-"29
-[; ;main.c: 29:         sendData(0b11110010);
-[e ( _sendData (1 -> 242 `i ]
-"30
-[; ;main.c: 30:         _delay((unsigned long)((500)*(8000000/4000.0)));
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-"31
-[; ;main.c: 31:         sendData(0b01100110);
-[e ( _sendData (1 -> 102 `i ]
-"32
-[; ;main.c: 32:         _delay((unsigned long)((500)*(8000000/4000.0)));
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-"33
-[; ;main.c: 33:         sendData(0b10110110);
-[e ( _sendData (1 -> 182 `i ]
-"34
-[; ;main.c: 34:         _delay((unsigned long)((500)*(8000000/4000.0)));
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-"35
-[; ;main.c: 35:         sendData(0b10111110);
-[e ( _sendData (1 -> 190 `i ]
-"36
-[; ;main.c: 36:         _delay((unsigned long)((500)*(8000000/4000.0)));
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-"37
-[; ;main.c: 37:         sendData(0b11100000);
-[e ( _sendData (1 -> 224 `i ]
-"38
-[; ;main.c: 38:         _delay((unsigned long)((500)*(8000000/4000.0)));
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-"39
-[; ;main.c: 39:         sendData(0b11111111);
-[e ( _sendData (1 -> 255 `i ]
-"40
-[; ;main.c: 40:         _delay((unsigned long)((500)*(8000000/4000.0)));
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
-"41
-[; ;main.c: 41:         sendData(0b11110111);
-[e ( _sendData (1 -> 247 `i ]
 "42
-[; ;main.c: 42:         _delay((unsigned long)((500)*(8000000/4000.0)));
-[e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
+[; ;main.c: 42:         for(int i = 0; i < 10; i++) {
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 10 `i 371  ]
+[e $U 372  ]
+[e :U 371 ]
+{
 "43
-[; ;main.c: 43:      }
+[; ;main.c: 43:             setTimer(byte7seg[minutos_dezena], byte7seg[minutos_unidade], byte7seg[segundos_dezena], byte7seg[i]);
+[e ( _setTimer (4 , , , *U + &U _byte7seg * -> -> _minutos_dezena `ui `ux -> -> # *U &U _byte7seg `ui `ux *U + &U _byte7seg * -> -> _minutos_unidade `ui `ux -> -> # *U &U _byte7seg `ui `ux *U + &U _byte7seg * -> -> _segundos_dezena `ui `ux -> -> # *U &U _byte7seg `ui `ux *U + &U _byte7seg * -> -> _i `ui `ux -> -> # *U &U _byte7seg `ui `ux ]
+"44
+[; ;main.c: 44:             _delay((unsigned long)((10)*(8000000/4000.0)));
+[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 8000000 `l `d .4000.0 `ul ]
+"45
+[; ;main.c: 45:         }
+}
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 10 `i 371  ]
+[e :U 372 ]
+}
+"46
+[; ;main.c: 46:         segundos_dezena++;
+[e ++ _segundos_dezena -> 1 `i ]
+"47
+[; ;main.c: 47:         if(segundos_dezena > 5) {
+[e $ ! > _segundos_dezena -> 5 `i 374  ]
+{
+"48
+[; ;main.c: 48:             segundos_dezena = 0;
+[e = _segundos_dezena -> 0 `i ]
+"49
+[; ;main.c: 49:             minutos_unidade++;
+[e ++ _minutos_unidade -> 1 `i ]
+"50
+[; ;main.c: 50:             if(minutos_unidade > 9) {
+[e $ ! > _minutos_unidade -> 9 `i 375  ]
+{
+"51
+[; ;main.c: 51:                 minutos_unidade = 0;
+[e = _minutos_unidade -> 0 `i ]
+"52
+[; ;main.c: 52:                 minutos_dezena++;
+[e ++ _minutos_dezena -> 1 `i ]
+"53
+[; ;main.c: 53:             }
+}
+[e :U 375 ]
+"54
+[; ;main.c: 54:         }
+}
+[e :U 374 ]
+"55
+[; ;main.c: 55:     }
 }
 [e :U 368 ]
 [e $U 369  ]
 [e :U 370 ]
-"44
-[; ;main.c: 44:     return;
+"56
+[; ;main.c: 56:     return;
 [e $UE 367  ]
-"45
-[; ;main.c: 45: }
+"57
+[; ;main.c: 57: }
 [e :UE 367 ]
 }
-"47
-[; ;main.c: 47: void sendData(int data) {
+"59
+[; ;main.c: 59: void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int segundos_unidade) {
+[v _setTimer `(v ~T0 @X0 1 ef4`i`i`i`i ]
+{
+[e :U _setTimer ]
+[v _minutos_dezena `i ~T0 @X0 1 r1 ]
+[v _minutos_unidade `i ~T0 @X0 1 r2 ]
+[v _segundos_dezena `i ~T0 @X0 1 r3 ]
+[v _segundos_unidade `i ~T0 @X0 1 r4 ]
+[f ]
+"60
+[; ;main.c: 60:     for(int i = 0; i < 8; i++) {
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 8 `i 377  ]
+[e $U 378  ]
+[e :U 377 ]
+{
+"61
+[; ;main.c: 61:         LATDbits.LATD1 = (minutos_dezena >> i) & 0x01;
+[e = . . _LATDbits 0 1 -> & >> _minutos_dezena _i -> 1 `i `uc ]
+"62
+[; ;main.c: 62:         clock();
+[e ( _clock ..  ]
+"63
+[; ;main.c: 63:     }
+}
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 8 `i 377  ]
+[e :U 378 ]
+}
+"64
+[; ;main.c: 64:     for(int i = 0; i < 8; i++) {
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 8 `i 380  ]
+[e $U 381  ]
+[e :U 380 ]
+{
+"65
+[; ;main.c: 65:         LATDbits.LATD1 = (minutos_unidade >> i) & 0x01;
+[e = . . _LATDbits 0 1 -> & >> _minutos_unidade _i -> 1 `i `uc ]
+"66
+[; ;main.c: 66:         clock();
+[e ( _clock ..  ]
+"67
+[; ;main.c: 67:     }for(int i = 0; i < 8; i++) {
+}
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 8 `i 380  ]
+[e :U 381 ]
+}
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 8 `i 383  ]
+[e $U 384  ]
+[e :U 383 ]
+{
+"68
+[; ;main.c: 68:         LATDbits.LATD1 = (segundos_dezena >> i) & 0x01;
+[e = . . _LATDbits 0 1 -> & >> _segundos_dezena _i -> 1 `i `uc ]
+"69
+[; ;main.c: 69:         clock();
+[e ( _clock ..  ]
+"70
+[; ;main.c: 70:     }
+}
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 8 `i 383  ]
+[e :U 384 ]
+}
+"71
+[; ;main.c: 71:     for(int i = 0; i < 8; i++) {
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 8 `i 386  ]
+[e $U 387  ]
+[e :U 386 ]
+{
+"72
+[; ;main.c: 72:         LATDbits.LATD1 = (segundos_unidade >> i) & 0x01;
+[e = . . _LATDbits 0 1 -> & >> _segundos_unidade _i -> 1 `i `uc ]
+"73
+[; ;main.c: 73:         clock();
+[e ( _clock ..  ]
+"74
+[; ;main.c: 74:     }
+}
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 8 `i 386  ]
+[e :U 387 ]
+}
+"75
+[; ;main.c: 75:     key();
+[e ( _key ..  ]
+"76
+[; ;main.c: 76: }
+[e :UE 376 ]
+}
+"78
+[; ;main.c: 78: void sendDualData(int data1, int data2) {
+[v _sendDualData `(v ~T0 @X0 1 ef2`i`i ]
+{
+[e :U _sendDualData ]
+[v _data1 `i ~T0 @X0 1 r1 ]
+[v _data2 `i ~T0 @X0 1 r2 ]
+[f ]
+"79
+[; ;main.c: 79:     for(int i = 0; i < 8; i++) {
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 8 `i 390  ]
+[e $U 391  ]
+[e :U 390 ]
+{
+"80
+[; ;main.c: 80:         LATDbits.LATD1 = (data1 >> i) & 0x01;
+[e = . . _LATDbits 0 1 -> & >> _data1 _i -> 1 `i `uc ]
+"81
+[; ;main.c: 81:         clock();
+[e ( _clock ..  ]
+"82
+[; ;main.c: 82:     }
+}
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 8 `i 390  ]
+[e :U 391 ]
+}
+"83
+[; ;main.c: 83:     for(int i = 0; i < 8; i++) {
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 8 `i 393  ]
+[e $U 394  ]
+[e :U 393 ]
+{
+"84
+[; ;main.c: 84:         LATDbits.LATD1 = (data2 >> i) & 0x01;
+[e = . . _LATDbits 0 1 -> & >> _data2 _i -> 1 `i `uc ]
+"85
+[; ;main.c: 85:         clock();
+[e ( _clock ..  ]
+"86
+[; ;main.c: 86:     }
+}
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 8 `i 393  ]
+[e :U 394 ]
+}
+"87
+[; ;main.c: 87:     key();
+[e ( _key ..  ]
+"88
+[; ;main.c: 88: }
+[e :UE 389 ]
+}
+"90
+[; ;main.c: 90: void sendData(int data) {
 [v _sendData `(v ~T0 @X0 1 ef1`i ]
 {
 [e :U _sendData ]
 [v _data `i ~T0 @X0 1 r1 ]
 [f ]
-"48
-[; ;main.c: 48:     for(int i = 0; i < 8; i++) {
+"91
+[; ;main.c: 91:     for(int i = 0; i < 8; i++) {
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
-[e $ < _i -> 8 `i 372  ]
-[e $U 373  ]
-[e :U 372 ]
+[e $ < _i -> 8 `i 397  ]
+[e $U 398  ]
+[e :U 397 ]
 {
-"49
-[; ;main.c: 49:         LATDbits.LATD1 = (data >> i) & 0x01;
+"92
+[; ;main.c: 92:         LATDbits.LATD1 = (data >> i) & 0x01;
 [e = . . _LATDbits 0 1 -> & >> _data _i -> 1 `i `uc ]
-"50
-[; ;main.c: 50:         clock();
+"93
+[; ;main.c: 93:         clock();
 [e ( _clock ..  ]
-"51
-[; ;main.c: 51:     }
+"94
+[; ;main.c: 94:     }
 }
 [e ++ _i -> 1 `i ]
-[e $ < _i -> 8 `i 372  ]
-[e :U 373 ]
+[e $ < _i -> 8 `i 397  ]
+[e :U 398 ]
 }
-"52
-[; ;main.c: 52:     key();
+"95
+[; ;main.c: 95:     key();
 [e ( _key ..  ]
-"53
-[; ;main.c: 53: }
-[e :UE 371 ]
+"96
+[; ;main.c: 96: }
+[e :UE 396 ]
 }
-"55
-[; ;main.c: 55: void clock() {
+"98
+[; ;main.c: 98: void clock() {
 [v _clock `(v ~T0 @X0 1 ef ]
 {
 [e :U _clock ]
 [f ]
-"56
-[; ;main.c: 56:     LATDbits.LATD0 = 1;
+"99
+[; ;main.c: 99:     LATDbits.LATD0 = 1;
 [e = . . _LATDbits 0 0 -> -> 1 `i `uc ]
-"57
-[; ;main.c: 57:     _delay((unsigned long)((500)*(8000000/4000000.0)));
+"100
+[; ;main.c: 100:     _delay((unsigned long)((500)*(8000000/4000000.0)));
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000000.0 `ul ]
-"58
-[; ;main.c: 58:     LATDbits.LATD0 = 0;
+"101
+[; ;main.c: 101:     LATDbits.LATD0 = 0;
 [e = . . _LATDbits 0 0 -> -> 0 `i `uc ]
-"59
-[; ;main.c: 59:     _delay((unsigned long)((500)*(8000000/4000000.0)));
+"102
+[; ;main.c: 102:     _delay((unsigned long)((500)*(8000000/4000000.0)));
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000000.0 `ul ]
-"60
-[; ;main.c: 60: }
-[e :UE 375 ]
+"103
+[; ;main.c: 103: }
+[e :UE 400 ]
 }
-"62
-[; ;main.c: 62: void key() {
+"105
+[; ;main.c: 105: void key() {
 [v _key `(v ~T0 @X0 1 ef ]
 {
 [e :U _key ]
 [f ]
-"63
-[; ;main.c: 63:     LATDbits.LATD2 = 1;
+"106
+[; ;main.c: 106:     LATDbits.LATD2 = 1;
 [e = . . _LATDbits 0 2 -> -> 1 `i `uc ]
-"64
-[; ;main.c: 64:     _delay((unsigned long)((500)*(8000000/4000000.0)));
+"107
+[; ;main.c: 107:     _delay((unsigned long)((500)*(8000000/4000000.0)));
 [e ( __delay (1 -> * -> -> 500 `i `d / -> -> 8000000 `l `d .4000000.0 `ul ]
-"65
-[; ;main.c: 65:     LATDbits.LATD2 = 0;
+"108
+[; ;main.c: 108:     LATDbits.LATD2 = 0;
 [e = . . _LATDbits 0 2 -> -> 0 `i `uc ]
-"66
-[; ;main.c: 66: }
-[e :UE 376 ]
+"109
+[; ;main.c: 109: }
+[e :UE 401 ]
 }
-"68
-[; ;main.c: 68: void setup() {
+"111
+[; ;main.c: 111: void setup() {
 [v _setup `(v ~T0 @X0 1 ef ]
 {
 [e :U _setup ]
 [f ]
-"69
-[; ;main.c: 69:     TRISD = 0x00;
+"112
+[; ;main.c: 112:     TRISD = 0x00;
 [e = _TRISD -> -> 0 `i `uc ]
-"70
-[; ;main.c: 70: }
-[e :UE 377 ]
+"113
+[; ;main.c: 113: }
+[e :UE 402 ]
 }

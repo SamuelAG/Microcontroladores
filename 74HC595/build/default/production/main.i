@@ -5636,36 +5636,79 @@ extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 
 
 
+
 void setup();
 void clock();
 void key();
 void sendData(int data);
+void sendDualData(int data1, int data2);
+void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int segundos_unidade);
+
+int byte7seg[10] = {
+    0b11111100,
+    0b01100000,
+    0b11011010,
+    0b11110010,
+    0b01100110,
+    0b10110110,
+    0b10111110,
+    0b11100000,
+    0b11111110,
+    0b11110110
+};
 
 void main(void) {
     setup();
-    while(1){
-        sendData(0b11111100);
-        _delay((unsigned long)((500)*(8000000/4000.0)));
-        sendData(0b01100000);
-        _delay((unsigned long)((500)*(8000000/4000.0)));
-        sendData(0b11011010);
-        _delay((unsigned long)((500)*(8000000/4000.0)));
-        sendData(0b11110010);
-        _delay((unsigned long)((500)*(8000000/4000.0)));
-        sendData(0b01100110);
-        _delay((unsigned long)((500)*(8000000/4000.0)));
-        sendData(0b10110110);
-        _delay((unsigned long)((500)*(8000000/4000.0)));
-        sendData(0b10111110);
-        _delay((unsigned long)((500)*(8000000/4000.0)));
-        sendData(0b11100000);
-        _delay((unsigned long)((500)*(8000000/4000.0)));
-        sendData(0b11111111);
-        _delay((unsigned long)((500)*(8000000/4000.0)));
-        sendData(0b11110111);
-        _delay((unsigned long)((500)*(8000000/4000.0)));
-     }
+    int minutos_dezena = 0;
+    int minutos_unidade = 0;
+    int segundos_dezena = 0;
+    while(1) {
+        for(int i = 0; i < 10; i++) {
+            setTimer(byte7seg[minutos_dezena], byte7seg[minutos_unidade], byte7seg[segundos_dezena], byte7seg[i]);
+            _delay((unsigned long)((10)*(8000000/4000.0)));
+        }
+        segundos_dezena++;
+        if(segundos_dezena > 5) {
+            segundos_dezena = 0;
+            minutos_unidade++;
+            if(minutos_unidade > 9) {
+                minutos_unidade = 0;
+                minutos_dezena++;
+            }
+        }
+    }
     return;
+}
+
+void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int segundos_unidade) {
+    for(int i = 0; i < 8; i++) {
+        LATDbits.LATD1 = (minutos_dezena >> i) & 0x01;
+        clock();
+    }
+    for(int i = 0; i < 8; i++) {
+        LATDbits.LATD1 = (minutos_unidade >> i) & 0x01;
+        clock();
+    }for(int i = 0; i < 8; i++) {
+        LATDbits.LATD1 = (segundos_dezena >> i) & 0x01;
+        clock();
+    }
+    for(int i = 0; i < 8; i++) {
+        LATDbits.LATD1 = (segundos_unidade >> i) & 0x01;
+        clock();
+    }
+    key();
+}
+
+void sendDualData(int data1, int data2) {
+    for(int i = 0; i < 8; i++) {
+        LATDbits.LATD1 = (data1 >> i) & 0x01;
+        clock();
+    }
+    for(int i = 0; i < 8; i++) {
+        LATDbits.LATD1 = (data2 >> i) & 0x01;
+        clock();
+    }
+    key();
 }
 
 void sendData(int data) {
