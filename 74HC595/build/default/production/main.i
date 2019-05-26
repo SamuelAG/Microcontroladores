@@ -5629,14 +5629,7 @@ extern __attribute__((nonreentrant)) void _delaywdt(unsigned long);
 extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 # 32 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\xc.h" 2 3
 # 8 "main.c" 2
-
-
-
-
-
-
-
-
+# 18 "main.c"
 void setup();
 void clock();
 void key();
@@ -5662,9 +5655,20 @@ void main(void) {
     int minutos_dezena = 0;
     int minutos_unidade = 0;
     int segundos_dezena = 0;
+    int pontos1 = 0;
+    int pontos2 = 0;
     while(1) {
+        if(PORTDbits.RD3 == 1) {
+            pontos1++;
+        }
+        if(PORTDbits.RD4 == 1) {
+            pontos2++;
+        }
         for(int i = 0; i < 10; i++) {
+            sendData(byte7seg[pontos2]);
+            sendData(byte7seg[pontos1]);
             setTimer(byte7seg[minutos_dezena], byte7seg[minutos_unidade], byte7seg[segundos_dezena], byte7seg[i]);
+            key();
             _delay((unsigned long)((10)*(8000000/4000.0)));
         }
         segundos_dezena++;
@@ -5696,7 +5700,7 @@ void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int 
         LATDbits.LATD1 = (segundos_unidade >> i) & 0x01;
         clock();
     }
-    key();
+
 }
 
 void sendDualData(int data1, int data2) {
@@ -5716,7 +5720,7 @@ void sendData(int data) {
         LATDbits.LATD1 = (data >> i) & 0x01;
         clock();
     }
-    key();
+
 }
 
 void clock() {
@@ -5733,5 +5737,6 @@ void key() {
 }
 
 void setup() {
-    TRISD = 0x00;
+    ADCON1 = 0x0F;
+    TRISD = 0b00011000;
 }

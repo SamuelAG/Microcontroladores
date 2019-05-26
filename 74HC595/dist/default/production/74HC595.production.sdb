@@ -27,17 +27,43 @@
 [v ___lmul __lmul `(ul  1 e 4 0 ]
 "91 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c99\common\Umul64.c
 [v ___omul __omul `(uo  1 e 8 0 ]
-"36 C:\Users\samer\Desktop\Microcontroladores\74HC595\main.c
+"38 C:\Users\samer\Desktop\Microcontroladores\74HC595\main.c
 [v _main main `(v  1 e 1 0 ]
-"59
+"72
 [v _setTimer setTimer `(v  1 e 1 0 ]
-"98
-[v _clock clock `(v  1 e 1 0 ]
-"105
-[v _key key `(v  1 e 1 0 ]
+"103
+[v _sendData sendData `(v  1 e 1 0 ]
 "111
+[v _clock clock `(v  1 e 1 0 ]
+"118
+[v _key key `(v  1 e 1 0 ]
+"124
 [v _setup setup `(v  1 e 1 0 ]
-[s S42 . 1 `uc 1 LATD0 1 0 :1:0 
+[s S28 . 1 `uc 1 RD0 1 0 :1:0 
+`uc 1 RD1 1 0 :1:1 
+`uc 1 RD2 1 0 :1:2 
+`uc 1 RD3 1 0 :1:3 
+`uc 1 RD4 1 0 :1:4 
+`uc 1 RD5 1 0 :1:5 
+`uc 1 RD6 1 0 :1:6 
+`uc 1 RD7 1 0 :1:7 
+]
+"2736 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic18f4550.h
+[s S37 . 1 `uc 1 SPP0 1 0 :1:0 
+`uc 1 SPP1 1 0 :1:1 
+`uc 1 SPP2 1 0 :1:2 
+`uc 1 SPP3 1 0 :1:3 
+`uc 1 SPP4 1 0 :1:4 
+`uc 1 SPP5 1 0 :1:5 
+`uc 1 SPP6 1 0 :1:6 
+`uc 1 SPP7 1 0 :1:7 
+]
+[s S46 . 1 `uc 1 . 1 0 :7:0 
+`uc 1 SS2 1 0 :1:7 
+]
+[u S49 . 1 `S28 1 . 1 0 `S37 1 . 1 0 `S46 1 . 1 0 ]
+[v _PORTDbits PORTDbits `VES49  1 e 1 @3971 ]
+[s S98 . 1 `uc 1 LATD0 1 0 :1:0 
 `uc 1 LATD1 1 0 :1:1 
 `uc 1 LATD2 1 0 :1:2 
 `uc 1 LATD3 1 0 :1:3 
@@ -46,8 +72,8 @@
 `uc 1 LATD6 1 0 :1:6 
 `uc 1 LATD7 1 0 :1:7 
 ]
-"3290 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic18f4550.h
-[s S51 . 1 `uc 1 LD0 1 0 :1:0 
+"3290
+[s S107 . 1 `uc 1 LD0 1 0 :1:0 
 `uc 1 LD1 1 0 :1:1 
 `uc 1 LD2 1 0 :1:2 
 `uc 1 LD3 1 0 :1:3 
@@ -56,55 +82,70 @@
 `uc 1 LD6 1 0 :1:6 
 `uc 1 LD7 1 0 :1:7 
 ]
-[u S60 . 1 `S42 1 . 1 0 `S51 1 . 1 0 ]
-[v _LATDbits LATDbits `VES60  1 e 1 @3980 ]
+[u S116 . 1 `S98 1 . 1 0 `S107 1 . 1 0 ]
+[v _LATDbits LATDbits `VES116  1 e 1 @3980 ]
 "4001
 [v _TRISD TRISD `VEuc  1 e 1 @3989 ]
-"23 C:\Users\samer\Desktop\Microcontroladores\74HC595\main.c
+"6581
+[v _ADCON1 ADCON1 `VEuc  1 e 1 @4033 ]
+"25 C:\Users\samer\Desktop\Microcontroladores\74HC595\main.c
 [v _byte7seg byte7seg `[10]i  1 e 20 0 ]
-"36
+"38
 [v _main main `(v  1 e 1 0 ]
 {
+"52
+[v main@i i `i  1 a 2 30 ]
 "42
-[v main@i i `i  1 a 2 26 ]
+[v main@segundos_dezena segundos_dezena `i  1 a 2 28 ]
+"41
+[v main@minutos_unidade minutos_unidade `i  1 a 2 26 ]
+"44
+[v main@pontos2 pontos2 `i  1 a 2 24 ]
+"43
+[v main@pontos1 pontos1 `i  1 a 2 22 ]
 "40
-[v main@segundos_dezena segundos_dezena `i  1 a 2 24 ]
-"39
-[v main@minutos_unidade minutos_unidade `i  1 a 2 22 ]
-"38
 [v main@minutos_dezena minutos_dezena `i  1 a 2 20 ]
-"57
+"70
 } 0
-"111
+"124
 [v _setup setup `(v  1 e 1 0 ]
 {
-"113
+"127
 } 0
-"59
+"72
 [v _setTimer setTimer `(v  1 e 1 0 ]
 {
-"71
-[v setTimer@i_117 i `i  1 a 2 17 ]
-"67
-[v setTimer@i_116 i `i  1 a 2 15 ]
-"64
-[v setTimer@i_115 i `i  1 a 2 13 ]
-"60
+"84
+[v setTimer@i_180 i `i  1 a 2 17 ]
+"80
+[v setTimer@i_179 i `i  1 a 2 15 ]
+"77
+[v setTimer@i_178 i `i  1 a 2 13 ]
+"73
 [v setTimer@i i `i  1 a 2 11 ]
-"59
+"72
 [v setTimer@minutos_dezena minutos_dezena `i  1 p 2 0 ]
 [v setTimer@minutos_unidade minutos_unidade `i  1 p 2 2 ]
 [v setTimer@segundos_dezena segundos_dezena `i  1 p 2 4 ]
 [v setTimer@segundos_unidade segundos_unidade `i  1 p 2 6 ]
-"76
+"89
 } 0
-"105
-[v _key key `(v  1 e 1 0 ]
+"103
+[v _sendData sendData `(v  1 e 1 0 ]
 {
+"104
+[v sendData@i i `i  1 a 2 5 ]
+"103
+[v sendData@data data `i  1 p 2 0 ]
 "109
 } 0
-"98
+"111
 [v _clock clock `(v  1 e 1 0 ]
 {
-"103
+"116
+} 0
+"118
+[v _key key `(v  1 e 1 0 ]
+{
+"122
 } 0

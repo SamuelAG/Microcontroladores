@@ -12,6 +12,8 @@
 #define CLOCK LATDbits.LATD0
 #define DATA LATDbits.LATD1
 #define KEY LATDbits.LATD2
+#define POINT_1 PORTDbits.RD3
+#define POINT_2 PORTDbits.RD4
 
 void setup();
 void clock();
@@ -38,9 +40,20 @@ void main(void) {
     int minutos_dezena = 0;
     int minutos_unidade = 0;
     int segundos_dezena = 0;
+    int pontos1 = 0;
+    int pontos2 = 0;
     while(1) {
+        if(POINT_1 == 1) {
+            pontos1++;
+        }
+        if(POINT_2 == 1) {
+            pontos2++;
+        }
         for(int i = 0; i < 10; i++) {
+            sendData(byte7seg[pontos2]);
+            sendData(byte7seg[pontos1]);
             setTimer(byte7seg[minutos_dezena], byte7seg[minutos_unidade], byte7seg[segundos_dezena], byte7seg[i]);
+            key();
             __delay_ms(10);
         }
         segundos_dezena++;
@@ -72,7 +85,7 @@ void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int 
         DATA = (segundos_unidade >> i) & 0x01;
         clock();
     }
-    key();
+    //key();
 }
 
 void sendDualData(int data1, int data2) {
@@ -92,7 +105,7 @@ void sendData(int data) {
         DATA = (data >> i) & 0x01;
         clock();
     }
-    key();
+    //key();
 }
 
 void clock() {
@@ -109,5 +122,6 @@ void key() {
 }
 
 void setup() {
-    TRISD = 0x00;
+    ADCON1 = 0x0F;
+    TRISD = 0b00011000;
 }
