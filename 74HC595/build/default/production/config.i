@@ -1,4 +1,4 @@
-# 1 "main.c"
+# 1 "config.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,15 +6,7 @@
 # 1 "<built-in>" 2
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "main.c" 2
-
-
-
-
-
-
-
-# 1 "./config.c" 1
+# 1 "config.c" 2
 
 
 
@@ -5700,164 +5692,5 @@ extern __attribute__((nonreentrant)) void _delaywdt(unsigned long);
 #pragma intrinsic(_delay3)
 extern __attribute__((nonreentrant)) void _delay3(unsigned char);
 # 32 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\xc.h" 2 3
-# 71 "./config.c" 2
-# 8 "main.c" 2
-# 17 "main.c"
-void setup();
-void clock();
-void key();
+# 71 "config.c" 2
 
-void sendData(int data);
-void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int segundos_unidade);
-void setScore(int centena, int dezena, int unidade);
-
-
-int byte7seg[10] = {
-    0b11111100,
-    0b01100000,
-    0b11011010,
-    0b11110010,
-    0b01100110,
-    0b10110110,
-    0b10111110,
-    0b11100000,
-    0b11111110,
-    0b11110110
-};
-
-void main(void) {
-    setup();
-
-
-    int minutos_dezena = 0;
-    int minutos_unidade = 0;
-    int segundos_dezena = 0;
-
-
-    int pontos1[3] = {0, 0, 0};
-    int pontos2[3] = {0, 0, 0};
-
-    while(1) {
-
-        if(PORTDbits.RD3 == 1) {
-            pontos1[0]++;
-            if(pontos1[0] > 9) {
-                pontos1[1]++;
-                pontos1[0] = 0;
-            }
-        }
-
-        if(PORTDbits.RD4 == 1) {
-            pontos2[0]++;
-            if(pontos2[0] > 9) {
-                pontos2[1]++;
-                pontos2[0] = 0;
-            }
-        }
-
-
-
-
-        for(int segundos = 0; segundos < 10; segundos++) {
-            setScore(byte7seg[pontos2[2]], byte7seg[pontos2[1]], byte7seg[pontos2[0]]);
-            setTimer(byte7seg[minutos_dezena], byte7seg[minutos_unidade], byte7seg[segundos_dezena], byte7seg[segundos]);
-            setScore(byte7seg[pontos2[2]], byte7seg[pontos1[1]], byte7seg[pontos1[0]]);
-            key();
-            pontos1[0]++;
-            pontos2[0]++;
-            _delay((unsigned long)((10)*(8000000/4000.0)));
-        }
-
-
-
-
-
-
-        if(pontos2[0] > 9) {
-            pontos2[1]++;
-            pontos2[0] = 0;
-            if(pontos2[1] > 9) {
-                pontos2[1] = 0;
-                pontos2[2]++;
-            }
-        }
-        if(pontos1[0] > 9) {
-            pontos1[1]++;
-            pontos1[0] = 0;
-            if(pontos1[1] > 9) {
-                pontos1[1] = 0;
-                pontos1[2]++;
-            }
-        }
-
-
-        segundos_dezena++;
-        if(segundos_dezena > 5) {
-            segundos_dezena = 0;
-            minutos_unidade++;
-            if(minutos_unidade > 9) {
-                minutos_unidade = 0;
-                minutos_dezena++;
-            }
-        }
-    }
-    return;
-}
-
-void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int segundos_unidade) {
-    for(int i = 0; i < 8; i++) {
-        LATDbits.LATD1 = (minutos_dezena >> i) & 0x01;
-        clock();
-    }
-    for(int i = 0; i < 8; i++) {
-        LATDbits.LATD1 = (minutos_unidade >> i) & 0x01;
-        clock();
-    }for(int i = 0; i < 8; i++) {
-        LATDbits.LATD1 = (segundos_dezena >> i) & 0x01;
-        clock();
-    }
-    for(int i = 0; i < 8; i++) {
-        LATDbits.LATD1 = (segundos_unidade >> i) & 0x01;
-        clock();
-    }
-}
-
-void setScore(int centena, int dezena, int unidade) {
-    for(int i = 0; i < 8; i++) {
-        LATDbits.LATD1 = (centena >> i) & 0x01;
-        clock();
-    }
-    for(int i = 0; i < 8; i++) {
-        LATDbits.LATD1 = (dezena >> i) & 0x01;
-        clock();
-    }
-    for(int i = 0; i < 8; i++) {
-        LATDbits.LATD1 = (unidade >> i) & 0x01;
-        clock();
-    }
-}
-
-void sendData(int data) {
-    for(int i = 0; i < 8; i++) {
-        LATDbits.LATD1 = (data >> i) & 0x01;
-        clock();
-    }
-}
-
-void clock() {
-    LATDbits.LATD0 = 1;
-    _delay((unsigned long)((500)*(8000000/4000000.0)));
-    LATDbits.LATD0 = 0;
-    _delay((unsigned long)((500)*(8000000/4000000.0)));
-}
-
-void key() {
-    LATDbits.LATD2 = 1;
-    _delay((unsigned long)((500)*(8000000/4000000.0)));
-    LATDbits.LATD2 = 0;
-}
-
-void setup() {
-    ADCON1 = 0x0F;
-    TRISD = 0b00011000;
-}

@@ -5,9 +5,7 @@
  * Created on 22 de Abril de 2019, 22:53
  */
 
-#include <xc.h>
-#include <pic18f4550.h>
-#define _XTAL_FREQ 8000000
+#include "config.c"
 
 #define CLOCK LATDbits.LATD0
 #define DATA LATDbits.LATD1
@@ -15,13 +13,16 @@
 #define POINT_1 PORTDbits.RD3
 #define POINT_2 PORTDbits.RD4
 
+// Protótipo das funções
 void setup();
 void clock();
 void key();
-void sendData(int data);
-void sendDualData(int data1, int data2);
-void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int segundos_unidade);
 
+void sendData(int data);
+void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int segundos_unidade);
+void setScore(int centena, int dezena, int unidade);
+
+// Vetor para armazenar os códigos do display 7 segmentos.
 int byte7seg[10] = {
     0b11111100, //0
     0b01100000, //1
@@ -37,25 +38,50 @@ int byte7seg[10] = {
 
 void main(void) {
     setup();
+    // Variaveis para controlar o relógio.
     int minutos_dezena = 0;
     int minutos_unidade = 0;
     int segundos_dezena = 0;
-    int pontos1 = 0;
-    int pontos2 = 0;
+    // Vetores para armazenar a dezena e unidade dos pontos de cada time, a posição 0 armezena a unidade e a posição 1 a dezena.
+    int pontos1[3] = {0, 0, 0};
+    int pontos2[3] = {0, 0, 0};
+    
     while(1) {
-        if(POINT_1 == 1) {
-            pontos1++;
-        }
-        if(POINT_2 == 1) {
-            pontos2++;
-        }
-        for(int i = 0; i < 10; i++) {
-            sendData(byte7seg[pontos2]);
-            sendData(byte7seg[pontos1]);
-            setTimer(byte7seg[minutos_dezena], byte7seg[minutos_unidade], byte7seg[segundos_dezena], byte7seg[i]);
+        // Loop para contabilizar os segundos e enviar os dados para os displays.
+        // O primeiro byte a ser enviado corresponde ao ultimo display cascateado e assim por diante.
+        for(int segundos = 0; segundos < 10; segundos++) {
+            setScore(byte7seg[pontos2[2]], byte7seg[pontos2[1]], byte7seg[pontos2[0]]); // Envia os bytes de pontos do time 2
+            setTimer(byte7seg[minutos_dezena], byte7seg[minutos_unidade], byte7seg[segundos_dezena], byte7seg[segundos]); // Envia os bytes do relógio
+            setScore(byte7seg[pontos2[2]], byte7seg[pontos1[1]], byte7seg[pontos1[0]]); // Envia os bytes de pontos do time 1
             key();
+            pontos1[0]++;
+            pontos2[0]++;
             __delay_ms(10);
         }
+        
+        // Incrementa os pontos a cada 10 segundos apenas para testes.
+        //pontos1[0]++;
+        //pontos2[0]++;
+        
+        // Lógica de incrementar dezena e centena dos pontos.
+        if(pontos2[0] > 9) {
+            pontos2[1]++;
+            pontos2[0] = 0;
+            if(pontos2[1] > 9) {
+                pontos2[1] = 0;
+                pontos2[2]++;
+            }
+        }
+        if(pontos1[0] > 9) {
+            pontos1[1]++;
+            pontos1[0] = 0;
+            if(pontos1[1] > 9) {
+                pontos1[1] = 0;
+                pontos1[2]++;
+            }
+        }
+        
+        // Lógica para incrementar dezena de segundos e minutos do relógio 
         segundos_dezena++;
         if(segundos_dezena > 5) {
             segundos_dezena = 0;
@@ -65,7 +91,7 @@ void main(void) {
                 minutos_dezena++;
             }
         }
-    }
+    }  
     return;
 }
 
@@ -85,19 +111,21 @@ void setTimer(int minutos_dezena, int minutos_unidade, int segundos_dezena, int 
         DATA = (segundos_unidade >> i) & 0x01;
         clock();
     }
-    //key();
 }
 
-void sendDualData(int data1, int data2) {
+void setScore(int centena, int dezena, int unidade) {
     for(int i = 0; i < 8; i++) {
-        DATA = (data1 >> i) & 0x01;
+        DATA = (centena >> i) & 0x01;
         clock();
     }
     for(int i = 0; i < 8; i++) {
-        DATA = (data2 >> i) & 0x01;
+        DATA = (dezena >> i) & 0x01;
         clock();
     }
-    key();
+    for(int i = 0; i < 8; i++) {
+        DATA = (unidade >> i) & 0x01;
+        clock();
+    }
 }
 
 void sendData(int data) {
@@ -105,7 +133,6 @@ void sendData(int data) {
         DATA = (data >> i) & 0x01;
         clock();
     }
-    //key();
 }
 
 void clock() {
